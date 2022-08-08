@@ -15,7 +15,7 @@
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
 {
-    for (const QString &dirPath : QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation)) {
+        for (const QString &dirPath : QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation)) {
         qDebug() << "Loading applications from" << dirPath;
         QDir applicationsDir(dirPath);
 
@@ -245,6 +245,7 @@ void Widget::loadDesktopFile(const QFileInfo &fileInfo)
 
     while (!file.atEnd()) {
         QString line = file.readLine().simplified();
+        constexpr QString::SplitBehavior SkipEmptyParts = QString::SkipEmptyParts;
 
         if (line.startsWith('[')) {
             inCorrectGroup = (line == "[Desktop Entry]");
@@ -257,7 +258,7 @@ void Widget::loadDesktopFile(const QFileInfo &fileInfo)
 
         if (line.startsWith("MimeType")) {
             line.remove(0, line.indexOf('=') + 1);
-            mimetypes = line.split(';', Qt::SkipEmptyParts);
+            mimetypes = line.split(';', QString::SkipEmptyParts);
             continue;
         }
 
